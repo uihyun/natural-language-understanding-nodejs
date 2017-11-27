@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Header, Jumbotron } from 'watson-react-components';
 
-const demoName = 'Natural Language Understanding';
+const demoName = 'Natural Language Understanding for CIL';
 const DESCRIPTION = 'Natural Language Understanding is a collection of APIs that offer text analysis through natural language processing. This set of APIs can analyze text to help you understand its concepts, entities, keywords, sentiment, and more. Additionally, you can create a custom model for some APIs to get specific results that are tailored to your domain.';
 
 export default function Layout(props) {
@@ -25,12 +25,12 @@ export default function Layout(props) {
         <Header
           mainBreadcrumbs={demoName}
           mainBreadcrumbsUrl="https://www.ibm.com/watson/services/natural-language-understanding/"
-          subBreadcrumbs="Demo"
-          subBreadcrumbsUrl="https://natural-language-understanding-demo.mybluemix.net"
+          subBreadcrumbs="Demo for CIL"
+          subBreadcrumbsUrl="https://uihyun-nlu-demo.mybluemix.net"
         />
         <Jumbotron
           serviceName={demoName}
-          repository="https://github.com/watson-developer-cloud/natural-language-understanding-nodejs"
+          repository="https://github.com/uihyun/natural-language-understanding-nodejs"
           documentation="https://console.bluemix.net/docs/services/natural-language-understanding/getting-started.html"
           apiReference="http://www.ibm.com/watson/developercloud/natural-language-understanding/api"
           version="GA"

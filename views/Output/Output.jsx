@@ -10,6 +10,7 @@ import Entities from './Entities.jsx';
 import Categories from './Categories.jsx';
 import Concept from './Concept.jsx';
 import SemanticRoles from './SemanticRoles.jsx';
+import Relations from './Relations.jsx';
 import { MAX_CONTENT_WIDTH } from '../utils/variables';
 
 const languages = lang();
@@ -85,6 +86,12 @@ function Output(props) {
                 language={languages.getLanguageName(props.language)}
               />
             </Pane>
+            <Pane label="Relations">
+              <Relations
+                data={props.data.results.relations}
+                language={languages.getLanguageName(props.language)}
+              />
+            </Pane>
           </Tabs>
         </div>
         : null
@@ -104,7 +111,7 @@ Output.defaultProps = {
   data: {},
   loading: false,
   query: {},
-  language: 'en',
+  language: 'ko',
 };
 
 export default Output;

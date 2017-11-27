@@ -1,5 +1,5 @@
 applications:
-- name: natural-language-understanding-demo
+- name: uihyun-nlu-demo
   path: .
   buildpack: sdk-for-nodejs
   command: npm start

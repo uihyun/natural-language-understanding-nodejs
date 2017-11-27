@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
     maxWidth: parser(`${MAX_CONTENT_WIDTH} - 1rem`),
   },
   header: {
-    marginTop: '6rem',
-    marginBottom: '2rem',
+    marginTop: '2rem',
+    marginBottom: '1rem',
     color: colors.PRIMARY,
     fontWeight: weight.NORMAL,
   },
@@ -30,11 +30,18 @@ const styles = StyleSheet.create({
     borderWidth: '1px',
     padding: '0rem',
     resize: 'none',
-    height: '6rem',
+    height: '15rem',
     ':focus': {
       border: 'none',
       outline: 'none',
     },
+  },
+  textareaModel: {
+    border: '1px solid grey',
+    borderWidth: '1px',
+    padding: '0rem',
+    resize: 'none',
+    height: '2rem',
   },
   buttonContainer: {
     display: 'block',
@@ -83,12 +90,15 @@ const Input = React.createClass({
   propTypes: {
     text: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    model: PropTypes.string,    
     language: PropTypes.string,
     changeRequestType: PropTypes.func,
     disableButton: PropTypes.bool,
     onSubmit: PropTypes.func,
+    onSubmitWithModel: PropTypes.func,
     onTabChange: PropTypes.func,
     onInputChange: PropTypes.func,
+    onInputChangeTrue: PropTypes.func,    
     error: PropTypes.shape({
       error: PropTypes.string,
       code: PropTypes.number,
@@ -98,8 +108,10 @@ const Input = React.createClass({
   getDefaultProps() {
     return {
       onSubmit() {},
+      onSubmitWithModel() {},
       onTabChange() {},
       onInputChange() {},
+      onInputChangeTrue() {},
       disableButton: false,
     };
   },
@@ -108,18 +120,23 @@ const Input = React.createClass({
     return {
       text: this.props.text,
       url: this.props.url,
+      model: this.props.model,
     };
   },
 
   onAnalyzeClick() {
     currentInput = index === 0 ? this.state.text : this.state.url;
-    this.props.onSubmit(currentInput);
+    if (this.state.model === '') {
+      this.props.onSubmit(currentInput);
+    } else {
+      this.props.onSubmitWithModel(currentInput, this.state.model);
+    }
   },
 
   render() {
     return (
       <div className={css(styles.container)}>
-        <h3 className={css(styles.header)}>Examine a news article or other content</h3>
+        <h3 className={css(styles.header)}>Examine content</h3>
         <Tabs
           selected={index}
           onChange={(i) => {
@@ -156,7 +173,16 @@ const Input = React.createClass({
           style={{ visibility: this.props.language ? 'visible' : 'hidden' }}
           className={css(styles.language)}
         >{this.props.language ? languages.getLanguageName(this.props.language) : null}</p>
-        <p className={css(styles.footnote)}>For results unique to your business needs consider building a <a href="https://www.ibm.com/us-en/marketplace/supervised-machine-learning" target="_blank" rel="noopener noreferrer" >custom model</a>.</p>
+        <p className={css(styles.footnote)}>For results unique to specific needs put custom model id below.</p>
+        <textarea
+          className={css(styles.textareaModel)}
+          defaultValue={this.state.model}
+          onChange={(e) => {
+            this.setState({ model: e.target.value });
+            this.props.onInputChangeTrue.call(this, e);
+          }}
+        />
+        <p className={css(styles.footnote)}>For Connecting to <a href="http://10.12.11.219:8393/ui/analytics" >WCA 11.0.2.1</a> or <a href="http://10.12.11.209:8393/ui/analytics" >WCA 11.0.0.3</a> in Songdo.</p>
         <div className={css(styles.buttonContainer)}>
           <button
             disabled={this.props.disableButton}

@@ -14,6 +14,18 @@ const styles = StyleSheet.create({
     fontSize: '1.25rem',
     maxWidth: '530px',
   },
+  componets: {
+    fontWeight: weight.MEDIUM,
+    color: colors.COOL_GRAY,
+    fontSize: '0.8rem',
+    maxWidth: '530px',
+  },
+  bar: {
+    fontWeight: weight.BOLD,
+    color: colors.COOL_GRAY,
+    fontSize: '1rem',
+    maxWidth: '530px',
+  },
 });
 
 const tableTheme = {
@@ -71,44 +83,57 @@ const tableTheme = {
   },
 };
 
-function RelationSentence(props) {
-  const reorderArgs = props.arguments.map(arg =>
-    arg.entities.map(ent =>
-      ({
-        'Relation 1': arg.text,
-        Type: ent.type,
-        'Relation 2': ent.text,
-      }),
-    ));
-
-  const result = [].concat.spread([], reorderArgs);
-  return (
-    <div>
-      <p className={css(styles.sentence)}>{props.sentence}</p>
-      <Table
-        columns={['Relation 1', 'Type', 'Relation 2']}
-        theme={tableTheme}
-        data={result}
-      />
-    </div>
-  );
-}
-
 RelationSentence.propTypes = {
   sentence: PropTypes.string,
+  type: PropTypes.string,
+  score: PropTypes.number, 
   arguments: PropTypes.arrayOf,
 };
 
 RelationSentence.defaultProps = {
   sentence: null,
+  type: null,
+  score: 0, 
   arguments: [],
+};
+
+function RelationSentence(props) {
+  // const reorderArgs = props.arguments.map(arg =>
+  //   arg.entities.map(ent =>
+  //     ({
+  //       'Relation 1': arg.text,
+  //       Type: ent.type,
+  //       'Relation 2': ent.text,
+  //     }),
+  //   ));
+
+  //const result = [].concat.spread([], reorderArgs);
+  return (
+    <div>
+      <p className={css(styles.sentence)}>{props.sentence}</p>
+      <p className={css(styles.componets)}>Type: {props.type}</p>
+      <p className={css(styles.componets)}>Score: {props.score}</p>
+      <p className={css(styles.componets)}>Relation 1 Text: <strong>{props.arguments[0].text}</strong></p>
+      <p className={css(styles.componets)}>Relation 1 Entity Type: {props.arguments[0].entities[0].type}</p>
+      <p className={css(styles.componets)}>Relation 1 Entity Text: {props.arguments[0].entities[0].text}</p>
+      <p className={css(styles.componets)}>Relation 2 Text: <strong>{props.arguments[1].text}</strong></p>
+      <p className={css(styles.componets)}>Relation 2 Entity Type: {props.arguments[1].entities[0].type}</p>
+      <p className={css(styles.componets)}>Relation 2 Entity Text: {props.arguments[1].entities[0].text}</p>
+      <p className={css(styles.bar)}>---------------------------------------------------------------------------------------------------</p>
+      {/* <Table
+        columns={['Relation 1', 'Type', 'Relation 2']}
+        theme={tableTheme}
+        data={result}
+      /> */}
+    </div>
+  );
 };
 
 const Relations = props => (
   <div>
     <OutputTemplate
       description={<p className="base--p_small">View <a href="https://www.ibm.com/watson/developercloud/natural-language-understanding/api/v1/#relations" target="_blank" rel="noopener noreferrer">relations</a> between different entities.</p>}
-      data={props.data}
+      data={{ relations: props.data }}
       showJson={props.showJson}
       onExitJson={props.onExitJson}
       onShowJson={props.onShowJson}
@@ -117,6 +142,8 @@ const Relations = props => (
         <div>
           {props.data.map(relation => (<RelationSentence
             sentence={relation.sentence}
+            type={relation.type}
+            score={relation.score}
             arguments={relation.arguments}
           />))}
         </div>
@@ -140,7 +167,7 @@ Relations.propTypes = {
 
 Relations.defaultProps = {
   data: null,
-  language: 'en',
+  language: 'ko',
   showJson: false,
   onExitJson: () => {},
   onShowJson: () => {},

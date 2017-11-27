@@ -9,9 +9,9 @@ const FEATURES = {
     emotion: {},
     sentiment: {},
     semantic_roles: {},
+    relations: {},
   },
 };
-
 
 const parseJSON = (response) => { // eslint-disable-line
   return response.json();
@@ -49,5 +49,27 @@ export const analyze = params =>
  */
 export const analyzeWithAllFeatures = (params) => {
   const query = Object.assign({}, FEATURES, params);
+  return analyze(query);
+};
+
+export const analyzeWithAllFeaturesWithModel = (params, modelId) => {
+  const FEATURES_WITH_MODEL = {
+    features: {
+      concepts: {},
+      entities: {
+        model: modelId
+      },
+      keywords: {},
+      categories: {},
+      emotion: {},
+      sentiment: {},
+      semantic_roles: {},
+      relations: {
+        model: modelId
+      },
+    },
+  };
+  console.log("model id: " + modelId);
+  const query = Object.assign({}, FEATURES_WITH_MODEL, params);
   return analyze(query);
 };
